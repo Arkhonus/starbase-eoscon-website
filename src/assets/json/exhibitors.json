@@ -1,0 +1,147 @@
+[
+    {
+        "displayName": "Antares Heavy Industries",
+        "shortName": "AHI",
+        "lots": ["1-A03"]
+    },
+    {
+        "displayName": "Haywire Dynamics",
+        "shortName": "Haywire",
+        "lots": ["1-A05"]
+    },
+    {
+        "displayName": "Ocel Works",
+        "shortName": "OCEL",
+        "lots": ["1-A05"]
+    },
+    {
+        "displayName": "Freelancer",
+        "shortName": "Freelancer",
+        "lots": ["1-A06", "1-B06"]
+    },
+    {
+        "displayName": "Ouroboros",
+        "shortName": "OURO",
+        "lots": ["1-A07"]
+    },
+    {
+        "displayName": "Skytanker",
+        "shortName": "Skytanker",
+        "lots": ["1-A07"]
+    },
+    {
+        "displayName": "Hepton Shipyard",
+        "shortName": "Hepton",
+        "lots": ["1-A09"]
+    },
+    {
+        "displayName": "Dirtyhuman",
+        "shortName": "Dirtyhuman",
+        "lots": ["1-A09"]
+    },
+    {
+        "displayName": "Hot Soup",
+        "shortName": "H.Soup",
+        "lots": ["1-A09"]
+    },
+    {
+        "displayName": "Commando Doggo",
+        "shortName": "CD",
+        "lots": ["1-A10"]
+    },
+    {
+        "displayName": "Cafe Inc",
+        "shortName": "Cafe",
+        "lots": ["1-B03", "1-B04"]
+    },
+    {
+        "displayName": "JPTech",
+        "shortName": "JPTech",
+        "lots": ["1-B05"]
+    },
+    {
+        "displayName": "Kenobi Space Industries",
+        "shortName": "KSI",
+        "lots": ["1-B09"]
+    },
+    {
+        "displayName": "Stuin",
+        "shortName": "Stuin",
+        "lots": ["1-B10"]
+    },
+    {
+        "displayName": "Progress Bar",
+        "shortName": "PB",
+        "lots": ["1-B10"]
+    },
+    {
+        "displayName": "Minerbat's Mazes",
+        "shortName": "Minerbat",
+        "lots": ["1-C03"]
+    },
+    {
+        "displayName": "Glorious Space Armada",
+        "shortName": "GSA",
+        "lots": ["1-C03"]
+    },
+    {
+        "displayName": "Vega Industries",
+        "shortName": "Vega",
+        "lots": ["1-C03"]
+    },
+    {
+        "displayName": "AcETech",
+        "shortName": "AcE",
+        "lots": ["1-C03"]
+    },
+    {
+        "displayName": "Sigma Industries",
+        "shortName": "SIGMA",
+        "lots": ["1-C03"]
+    },
+    {
+        "displayName": "iphex",
+        "shortName": "iphex",
+        "lots": ["1-C03"]
+    },
+    {
+        "displayName": "ORION",
+        "shortName": "ORION",
+        "lots": ["1-C05", "1-D05"]
+    },
+    {
+        "displayName": "Icarus Project",
+        "shortName": "Icarus",
+        "lots": ["1-C06"]
+    },
+    {
+        "displayName": "Angelwing Industries",
+        "shortName": "AWI",
+        "lots": ["1-C07"]
+    },
+    {
+        "displayName": "Royal Industries",
+        "shortName": "Royal",
+        "lots": ["1-C08"]
+    },
+    {
+        "displayName": "Seal Club",
+        "shortName": "AM-SC",
+        "lots": ["1-C09"]
+    },
+    {
+        "displayName": "S&P Industrys",
+        "shortName": "S&P",
+        "lots": ["1-C10"]
+    },
+    {
+        "displayName": "Lucky Industries",
+        "shortName": "Lucky",
+        "lots": ["1-C10"]
+    },
+    {
+        "displayName": "Ark's Sparks",
+        "shortName": "AS",
+        "lots": ["1-D06", "1-D07", "1-D08", "1-D09", "1-D10"]
+    }
+]

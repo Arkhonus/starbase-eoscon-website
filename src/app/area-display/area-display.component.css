@@ -1,0 +1,10 @@
+body {
+    overflow: hidden;
+    margin: 0px;
+}
+
+.lotLabel {
+    font-family: monospace;
+    background-color: black;
+    color: white;
+}
