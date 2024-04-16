@@ -13,6 +13,7 @@ export class AppService {
   pickables: THREE.Mesh[] = []
 
   selectedLot = new BehaviorSubject<Lot | null>(null)
+  jumpToZone = new BehaviorSubject<number>(0)
 
   constructor() { }
 }

@@ -10,6 +10,7 @@ import {
 import Stats from 'three/examples/jsm/libs/stats.module'
 import { AppService } from '../app.service';
 import { HttpClient } from '@angular/common/http';
+import TWEEN from '@tweenjs/tween.js';
 
 @Component({
   selector: 'app-area-display',
@@ -36,6 +37,8 @@ export class AreaDisplayComponent implements AfterViewInit{
   
   doClickOnRelease: boolean = false;
   showStats: boolean = false;
+
+  areaName: string = ""
   
   // Raycaster mouse picking
   intersectedObject?: THREE.Object3D | null = null
@@ -66,6 +69,10 @@ export class AreaDisplayComponent implements AfterViewInit{
       'front.png',
       'back.png'
     ] );
+
+    this.appService.jumpToZone.subscribe((zone) => {
+      this.cameraJump(zone)
+    })
   }
   
   ngAfterViewInit(): void {
@@ -79,10 +86,10 @@ export class AreaDisplayComponent implements AfterViewInit{
     
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     
-    let areaName = "gate"
+    this.areaName = "gate"
     
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
-    if (areaName == "gate"){
+    if (this.areaName == "gate"){
       // Create the chosen area
       this.gate = new WarpGate(this.appService, this.httpClient, this.labelsDiv.nativeElement, "half", this.renderer2);
       this.gate.group.rotateX(2 * Math.PI/4)
@@ -93,14 +100,14 @@ export class AreaDisplayComponent implements AfterViewInit{
     }
     
     // OrbitControls settings
-    this.setupControls(areaName);
+    this.setupControls(this.areaName);
     
     let currentZone: number = 0
     let prevZone: number
     
     let lotLabels: { [key: string]: CSS2DObject }
     
-    if (areaName == "gate"){
+    if (this.areaName == "gate"){
       this.controls.addEventListener('change', function(){
         _this.directionalLight!.position.set(_this.camera!.position.x, 0.5, _this.camera!.position.z)
         
@@ -117,11 +124,6 @@ export class AreaDisplayComponent implements AfterViewInit{
     this.labelRenderer = new CSS2DRenderer({element: this.labelsDiv.nativeElement})
     this.labelRenderer.setSize(window.innerWidth, window.innerHeight - this.appService.navbarComponent?.navbarElement.nativeElement.offsetHeight!)
     this.labelRenderer.domElement.style.pointerEvents = 'none'
-    
-    document.onreadystatechange = function() {
-      // Initialize lots
-      //_this.gate!.initLots()
-    }
     
     if (this.showStats){
       // Render stats
@@ -314,6 +316,35 @@ export class AreaDisplayComponent implements AfterViewInit{
     return normal.y * angle;
   }
 
+  cameraJump(zone: number){
+    if (this.areaName == "gate"){
+
+      console.log(new THREE.Spherical().setFromVector3(this.camera!.position))
+      //let spherical: THREE.Spherical = new THREE.Spherical(4000, 0, Math.PI/4 * (zone + 0))
+      let spherical: THREE.Spherical = new THREE.Spherical(4000, Math.PI/4 * (0 + 6), 0)
+      let newPos: THREE.Vector3 = new THREE.Vector3().setFromSpherical(spherical)
+
+      console.log(spherical)
+      console.log(newPos)
+
+      if (this.camera){
+        new TWEEN.Tween(this.camera.position)
+          .to(
+            {
+              x: newPos.x,
+              //y: 0,
+              z: -newPos.z
+            },
+            500
+          )
+          .start()
+          .onUpdate(() => {
+            this.controls?.update()
+          })
+      }
+    }
+  }
+
   // Render resize
   @HostListener('window:resize', ['$event'])
   onWindowResize() {
@@ -331,6 +362,7 @@ export class AreaDisplayComponent implements AfterViewInit{
   
   animate() {   
     this.controls!.update()
+    TWEEN.update()
     
     if (this.showStats){
       this.stats?.update()

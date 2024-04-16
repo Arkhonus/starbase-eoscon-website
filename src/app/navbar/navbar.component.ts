@@ -53,5 +53,9 @@ export class NavbarComponent implements AfterViewInit{
       instanceOptions
       );
   }
+
+  jumpToZone(){
+    this.appService.jumpToZone.next(1)
+  }
   
 }

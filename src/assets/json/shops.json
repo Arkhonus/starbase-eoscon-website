@@ -1,0 +1,52 @@
+[
+    {
+        "displayName": "Sunny Ship Shop",
+        "shortName": "SUNNY",
+        "lots": ["Shop I01"]
+    },
+    {
+        "displayName": "Okim Industries",
+        "shortName": "OKI",
+        "lots": ["Shop I03", "Shop I05", "Shop I07"]
+    },
+    {
+        "displayName": "DURATECH",
+        "shortName": "DURATECH",
+        "lots": ["Shop I09"]
+    },
+    {
+        "displayName": "Rando",
+        "shortName": "Rando",
+        "lots": ["Shop G01", "Shop G03", "Shop G07", "Shop G09"]
+    },
+    {
+        "displayName": "Vintage",
+        "shortName": "Vintage",
+        "lots": ["Shop E01"]
+    },
+    {
+        "displayName": "KBot",
+        "shortName": "KBot",
+        "lots": ["Shop E04"]
+    },
+    {
+        "displayName": "Dynastar",
+        "shortName": "Dynastar",
+        "lots": ["Shop E05"]
+    },
+    {
+        "displayName": "Quasar Systems",
+        "shortName": "QUASAR",
+        "lots": ["Shop D07"]
+    },
+    {
+        "displayName": "Balestar",
+        "shortName": "Balestar",
+        "lots": ["Shop E09"]
+    },
+    {
+        "displayName": "Epic Shipyards",
+        "shortName": "EPIC",
+        "lots": ["Shop C03"]
+    }
+]

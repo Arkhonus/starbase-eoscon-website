@@ -59,8 +59,21 @@ export class WarpGate implements Area {
                 (obj as THREE.Mesh).material = _this.gateMaterial;
                 _this.appService.pickables.push(obj as THREE.Mesh)
             }
-            else if (obj.name.substring(0,3) == "lot"){
+            else if (obj.name.substring(0,4) == "shop"){
+                const m = obj as THREE.Mesh
+                m.geometry.computeBoundingBox()
 
+                // Sets master lot ID
+                let lotID = "Shop " + obj.name.substring(obj.name.length-3 , obj.name.length)
+
+                // Creates lot object and pushes to array
+                let lot = new Lot(lotID, 0, m, _this.labelsDiv, _this.renderer2)
+                _this.appService.pickables.push(m)
+                _this.lots.push(lot)
+                lot.setEnabled(false)
+
+                _this.lotsDictionary.set(lot.lotID!, lot)
+                
             }
             else {
                 (obj as THREE.Mesh).material = _this.gateMaterial;
@@ -172,9 +185,29 @@ export class WarpGate implements Area {
     }
 
     initLots(){
+
+        let shopsUrl: string = 'assets/json/shops.json';
+        this.httpClient.get(shopsUrl).subscribe((response) => {
+            let shops = response as ExhibitorJSON[]
+            console.log(`${shops.length} exhibitors found`)
+            
+            shops.forEach((exhibitorJSON) => {
+                let shop = new Exhibitor(exhibitorJSON);
+                
+                shop.lots.forEach((lotID) => {
+                    let lot = this.lotsDictionary.get(lotID)
+                    lot?.setExhibitor(shop);
+                })
+            })
+
+            this.getFilledLots().forEach((filledLot) => {
+                filledLot.initLotLabel()
+            })
+        })
+
         // TODO: Get from database
-        let url: string = 'assets/json/exhibitors.json';
-        this.httpClient.get(url).subscribe((response) => {
+        let exhibitorsUrl: string = 'assets/json/exhibitors.json';
+        this.httpClient.get(exhibitorsUrl).subscribe((response) => {
             let exhibitors = response as ExhibitorJSON[]
             console.log(`${exhibitors.length} exhibitors found`)
             
