@@ -2,14 +2,14 @@
     <canvas #areaDisplay id="areaDisplay" class="absolute -z-50"></canvas>
     <div #labelsDisplay id="labels" class="absolute bottom-0 -z-40"></div>
 </div>
-<div class="absolute w-12 inset-y-0 right-2 items-center justify-center flex">
+<div class="absolute w-12 inset-y-0 right-2 items-center justify-center flex -z-40">
     <button (mouseenter)="hoveredOverButton(false)" (mouseleave)="hoveredOverButton(true)" (click)="cameraJump(goToPrevZone)" #buttonNextSegment class="fixed hover:animate-ping">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" class="w-6 h-6">
             <polygon style="fill: rgb(255,255,255)" points="100 50, 13.397 100, 13.397 0"/>
         </svg>
     </button>
 </div>
-<div class="absolute w-12 inset-y-0 left-2 items-center justify-center flex">
+<div class="absolute w-12 inset-y-0 left-2 items-center justify-center flex -z-40">
     <button (mouseenter)="hoveredOverButton(false)" (mouseleave)="hoveredOverButton(true)" (click)="cameraJump(goToNextZone)" #buttonPrevSegment class="fixed hover:animate-ping">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 100 100" class="w-6 h-6">
             <polygon style="fill: rgb(255,255,255)" points="0 50, 86.603 100, 86.603 0"/>
