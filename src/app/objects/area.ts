@@ -2,7 +2,6 @@ import * as THREE from 'three'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { Lot } from "./lot"
 import { Exhibitor, ExhibitorJSON } from "./exhibitor"
-import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer';
 import { AppService } from '../app.service';
 import { HttpClient } from '@angular/common/http';
 import { Renderer2 } from '@angular/core';
@@ -185,11 +184,10 @@ export class WarpGate implements Area {
     }
 
     initLots(){
-
         let shopsUrl: string = 'assets/json/shops.json';
         this.httpClient.get(shopsUrl).subscribe((response) => {
             let shops = response as ExhibitorJSON[]
-            console.log(`${shops.length} exhibitors found`)
+            console.log(`${shops.length} shops found`)
             
             shops.forEach((exhibitorJSON) => {
                 let shop = new Exhibitor(exhibitorJSON);
@@ -200,8 +198,9 @@ export class WarpGate implements Area {
                 })
             })
 
+
             this.getFilledLots().forEach((filledLot) => {
-                filledLot.initLotLabel()
+                filledLot.initLotLabel(false)
             })
         })
 
@@ -220,8 +219,9 @@ export class WarpGate implements Area {
                 })
             })
 
+
             this.getFilledLots().forEach((filledLot) => {
-                filledLot.initLotLabel()
+                filledLot.initLotLabel(true)
             })
         })
     }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, HostListener, Renderer2, ViewChild } from '@angular/core';
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { WarpGate } from "../objects/area"
@@ -30,6 +30,7 @@ export class AreaDisplayComponent implements AfterViewInit{
   renderer?: THREE.WebGLRenderer
   camera?: THREE.PerspectiveCamera
   controls?: OrbitControls
+  controlsSphericalCoords: THREE.Spherical = new THREE.Spherical()
   labelRenderer?: CSS2DRenderer
   stats?: Stats
   directionalLight?: THREE.DirectionalLight
@@ -47,6 +48,7 @@ export class AreaDisplayComponent implements AfterViewInit{
     color: 0x00ff00,
   })
   
+  raycasting: boolean = true;
   raycaster = new THREE.Raycaster()
   intersects?: THREE.Intersection[]
   
@@ -54,6 +56,11 @@ export class AreaDisplayComponent implements AfterViewInit{
   
   appService: AppService
   httpClient: HttpClient
+
+  currentZone: number = 0
+  prevZone: number = -1
+  goToNextZone: number = 1
+  goToPrevZone: number = -1
   
   constructor(appService: AppService, httpClient: HttpClient, renderer2: Renderer2){
     this.appService = appService
@@ -78,14 +85,18 @@ export class AreaDisplayComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     let _this = this
     
+    // Camera config
     this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / (window.innerHeight - this.appService.navbarComponent?.navbarElement.nativeElement.offsetHeight!), 0.1, 10000)
     this.camera.position.set(0, 0, 4000)
     
+    // Renderer config
     this.renderer = new THREE.WebGLRenderer({canvas: this.areaDisplay.nativeElement})
     this.renderer.setSize(window.innerWidth, window.innerHeight - this.appService.navbarComponent?.navbarElement.nativeElement.offsetHeight!)
     
+    // Controls config
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     
+    // For now only gate is available
     this.areaName = "gate"
     
     this.directionalLight = new THREE.DirectionalLight(0xffffff, 0.7);
@@ -102,21 +113,11 @@ export class AreaDisplayComponent implements AfterViewInit{
     // OrbitControls settings
     this.setupControls(this.areaName);
     
-    let currentZone: number = 0
-    let prevZone: number
-    
-    let lotLabels: { [key: string]: CSS2DObject }
-    
     if (this.areaName == "gate"){
       this.controls.addEventListener('change', function(){
         _this.directionalLight!.position.set(_this.camera!.position.x, 0.5, _this.camera!.position.z)
         
-        currentZone = _this.getUserCurrentZone()
-        
-        // Updates lot labels
-        _this.generateLotLabels(currentZone, prevZone, lotLabels)
-        
-        prevZone = currentZone
+        _this.zoneChange()
       })
     }
     
@@ -134,29 +135,27 @@ export class AreaDisplayComponent implements AfterViewInit{
     this.renderer.setAnimationLoop(this.animate.bind(this))
   }
 
-  generateLotLabels(currentZone: number, prevZone: number, outLotLabels: { [key: string]: CSS2DObject }): void{
+  zoneChange(){
+    this.currentZone = this.getUserCurrentZone()
+
+    if (this.currentZone != this.prevZone){
+      this.goToNextZone = (this.currentZone + 1) > 7 ? 0 : (this.currentZone + 1)
+      this.goToPrevZone = (this.currentZone - 1) < 0 ? 7 : (this.currentZone - 1)
+      
+      // Updates lot labels
+      this.updateLotLabelVisibility(this.currentZone)
+      
+      console.log("Now looking at zone " + this.currentZone)
+    }
+    
+    this.prevZone = this.currentZone
+  }
+
+  updateLotLabelVisibility(currentZone: number): void{
     // Updates lot labels
     this.gate?.lots.forEach((lot) => {
       lot.zoneVisible = (currentZone == lot.zone)
     })
-
-    if (currentZone != prevZone){
-      // Function is triggering but labels not refreshing
-      // Redesign to hide labels rather than remove
-      for(let label in outLotLabels){
-        this.appService.scene.remove(outLotLabels[label])
-        delete outLotLabels[label]
-      }
-      
-      
-      
-      for(let label in outLotLabels){
-        this.appService.scene.add(outLotLabels[label])
-        outLotLabels[label].element.className = "text-white"
-      }
-      
-      console.log("Now looking at zone " + currentZone)
-    }
   }
 
   getUserCurrentZone(): number{
@@ -192,10 +191,14 @@ export class AreaDisplayComponent implements AfterViewInit{
   prevHoveredLot?: Lot
   currentLot?: Lot
 
+  hoveredOverButton(notHovering: boolean){
+    this.appService.raycasting.next(notHovering);
+  }
+
   @HostListener('document:mousemove', ['$event'])
   onMouseMove(event: MouseEvent) {
     this.doClickOnRelease = false;
-
+    
     let temp = this.areaDisplay.nativeElement.getBoundingClientRect().top
 
     this.mouse.set(
@@ -203,35 +206,45 @@ export class AreaDisplayComponent implements AfterViewInit{
       -((event.clientY - temp)/ this.areaDisplay.nativeElement.clientHeight) * 2 + 1
     )
 
+    // Raycasting
     this.raycaster.setFromCamera(this.mouse, this.camera!)
     
     if (this.gate){
-      this.intersects = this.raycaster.intersectObjects(this.appService.pickables, false)
-      
-      if (this.intersects.length > 0) {
-        this.intersectedObject = this.intersects[0].object
-      } else {
-        this.intersectedObject = null
-      }
-
-      if (this.intersectedObject){
-        this.appService.pickables.forEach((o: THREE.Mesh, i) => {
-          if (this.intersectedObject === o) {
-            this.gate!.lots.forEach((lot) => {
-              if (lot.lotArea == this.intersectedObject as THREE.Mesh){
-                this.currentLot = lot
-                if (this.prevHoveredLot != this.currentLot){
-                  lot.setHovered(true)
-                  this.prevHoveredLot?.setHovered(false)
+      if (this.appService.raycasting.getValue()){
+        this.intersects = this.raycaster.intersectObjects(this.appService.pickables, false)
+        
+        if (this.intersects.length > 0) {
+          this.intersectedObject = this.intersects[0].object
+        } else {
+          this.intersectedObject = null
+        }
+  
+        if (this.intersectedObject){
+          this.appService.pickables.forEach((o: THREE.Mesh, i) => {
+            if (this.intersectedObject === o) {
+              this.gate!.lots.forEach((lot) => {
+                if (lot.lotArea == this.intersectedObject as THREE.Mesh){
+                  this.currentLot = lot
+                  if (this.prevHoveredLot != this.currentLot){
+                    lot.setHovered(true)
+                    this.prevHoveredLot?.setHovered(false)
+                  }
+  
+                  this.prevHoveredLot = lot;
                 }
+              })
+            } 
+          })
+  
+        }else {
+          this.prevHoveredLot?.setHovered(false)
+          this.prevHoveredLot = undefined
+        }
 
-                this.prevHoveredLot = lot;
-              }
-            })
-          } 
-        })
+      }
+      else{
+        this.intersectedObject = null
 
-      }else {
         this.prevHoveredLot?.setHovered(false)
         this.prevHoveredLot = undefined
       }
@@ -248,8 +261,9 @@ export class AreaDisplayComponent implements AfterViewInit{
   @HostListener('document:mouseup', ['$event'])
   onMouseUp(event: MouseEvent){
     switch (event.button){
+
       case 0: { // Left click
-        if (this.doClickOnRelease) {
+        if (this.doClickOnRelease && this.appService.raycasting.getValue()) {
           // Your select function
           if (this.intersectedObject){
             this.gate!.lots.forEach((lot) => {
@@ -320,26 +334,57 @@ export class AreaDisplayComponent implements AfterViewInit{
     if (this.areaName == "gate"){
 
       console.log(new THREE.Spherical().setFromVector3(this.camera!.position))
-      //let spherical: THREE.Spherical = new THREE.Spherical(4000, 0, Math.PI/4 * (zone + 0))
-      let spherical: THREE.Spherical = new THREE.Spherical(4000, Math.PI/4 * (0 + 6), 0)
-      let newPos: THREE.Vector3 = new THREE.Vector3().setFromSpherical(spherical)
 
-      console.log(spherical)
-      console.log(newPos)
+      this.controlsSphericalCoords!.radius = this.controls!.getDistance()
+      this.controlsSphericalCoords!.phi = this.controls!.getPolarAngle()
+      this.controlsSphericalCoords!.theta = this.controls!.getAzimuthalAngle()
+
+      // let spherical: THREE.Spherical = new THREE.Spherical(4000, Math.PI/4 * (zone + 6), 0)
+      let targetRotation: number
+
+      // Hack job, to refine later
+      if (zone > this.currentZone){
+        if (zone < 6){
+          targetRotation = Math.PI/4 * (-zone)
+        }
+        else{
+          targetRotation = (2 * Math.PI) + (Math.PI/4 * (-zone))
+        }
+      }
+      else{
+        if (zone < 3){
+          targetRotation = Math.PI/4 * (-zone)
+        }
+        else{
+          targetRotation = (2 * Math.PI) + (Math.PI/4 * (-zone))
+        }
+      }
+
+      console.log(`Zone ${zone}: ${targetRotation * 180 / Math.PI} degrees`)
+
+      let spherical: THREE.Spherical = new THREE.Spherical(4000, Math.PI/2, targetRotation)
+
+      let newPos: THREE.Vector3 = new THREE.Vector3();
 
       if (this.camera){
-        new TWEEN.Tween(this.camera.position)
+        new TWEEN.Tween(this.controlsSphericalCoords)
           .to(
             {
-              x: newPos.x,
-              //y: 0,
-              z: -newPos.z
+              radius: spherical.radius,
+              phi: Math.PI/2,
+              theta: spherical.theta
             },
             500
           )
+          .easing(TWEEN.Easing.Quadratic.Out)
           .start()
           .onUpdate(() => {
+            newPos.setFromSpherical(this.controlsSphericalCoords)
+            this.camera!.position.copy(newPos);
             this.controls?.update()
+          })
+          .onComplete(() => {
+
           })
       }
     }

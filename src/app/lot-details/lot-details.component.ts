@@ -1,7 +1,9 @@
-import { AfterViewInit, Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EnvironmentInjector, Renderer2, ViewChild, ViewContainerRef } from '@angular/core';
 import { AppService } from '../app.service';
 import { Lot } from '../objects/lot';
 import { Drawer } from 'flowbite';
+import { createComponent } from '@angular/core';
+import { ExhibitorCardComponent } from '../exhibitor-card/exhibitor-card.component';
 
 @Component({
   selector: 'app-lot-details',
@@ -14,18 +16,23 @@ export class LotDetailsComponent implements AfterViewInit {
   @ViewChild('drawer') drawerElement!: ElementRef<HTMLDivElement>
   @ViewChild('lotID') lotIdElement!: ElementRef<HTMLElement>
   @ViewChild('exhibitorsHere') exhibitorNumberElement!: ElementRef<HTMLElement>
-  @ViewChild('exhibitorsList') exhibitorsListElement!: ElementRef<HTMLElement>
+  @ViewChild('exhibitorsList', {read: ViewContainerRef}) exhibitorsListElement!: ViewContainerRef
 
   appService: AppService
   renderer2: Renderer2
   expanded: boolean = false
   drawer?: Drawer
 
+  envInjector: EnvironmentInjector
+
+  exhibitorCards: ExhibitorCardComponent[] = []
+
   currentLot : Lot | null = null
 
-  constructor(appService: AppService, renderer2: Renderer2){
+  constructor(appService: AppService, renderer2: Renderer2, injector: EnvironmentInjector){
     this.appService = appService
     this.renderer2 = renderer2
+    this.envInjector = injector
 
   }
 
@@ -59,6 +66,10 @@ export class LotDetailsComponent implements AfterViewInit {
     
   }
 
+  hoveredOverComponent(notHovering: boolean){
+    this.appService.raycasting.next(notHovering);
+  }
+
   updateDetails(lot: Lot | null){
     this.currentLot = lot
 
@@ -71,17 +82,15 @@ export class LotDetailsComponent implements AfterViewInit {
       this.lotIdElement.nativeElement.innerHTML = "Lot " + lot.lotID
 
       if (lot.exhibitor.length == 0){
+        this.exhibitorNumberElement.nativeElement.removeAttribute("hidden")
         this.exhibitorNumberElement.nativeElement.innerHTML = "No exhibitors here"
       }
-      else if (lot.exhibitor.length == 1){
-        this.exhibitorNumberElement.nativeElement.innerHTML = "Exhibitor here"
-      }
       else {
-        this.exhibitorNumberElement.nativeElement.innerHTML = "Exhibitors here"
+        this.exhibitorNumberElement.nativeElement.setAttribute("hidden", "")
       }
 
       // Removes all children
-      this.exhibitorsListElement.nativeElement.innerHTML = ""
+      this.exhibitorsListElement.clear()
 
       let listItems: string = ""
       if (lot.exhibitor.length == 0){
@@ -89,18 +98,8 @@ export class LotDetailsComponent implements AfterViewInit {
       }
       else {
         lot.exhibitor.forEach((exhibitor) => {
-          let temp: HTMLElement = this.renderer2.createElement('li');
-
-          // Renders a bit differently if the display name is the same as the short name
-          if (exhibitor.displayName == exhibitor.shortName){
-            temp.innerHTML = `${exhibitor.displayName}`;
-          }
-          else {
-            temp.innerHTML = `${exhibitor.displayName} (${exhibitor.shortName})`;
-          }
-          temp.className = "text-base text-gray-500 dark:text-gray-400"
-
-          this.renderer2.appendChild(this.exhibitorsListElement.nativeElement, temp);
+          let exhibitorCard = this.exhibitorsListElement.createComponent(ExhibitorCardComponent, {environmentInjector: this.envInjector})
+          exhibitorCard.setInput("exhibitor", exhibitor)
         })
       }
     }

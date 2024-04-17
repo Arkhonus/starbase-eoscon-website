@@ -2,146 +2,204 @@
     {
         "displayName": "Antares Heavy Industries",
         "shortName": "AHI",
+        "tagline": "",
+        "description": "Antares Heavy Industry is a highly vertically integrated corporation aiming to be the premier choice for all heavy goods manufacturing and construction in the belt of Eos and on its moons, with a special focus on industrial grade space ships.",
         "lots": ["1-A03"]
     },
     {
         "displayName": "Haywire Dynamics",
         "shortName": "Haywire",
+        "tagline": "",
+        "description": "With an eye for function, and form, Haywire is toiling away in the ship designer when they aren’t bolting themselves to a missile, raising space pigs, or staring at a rock in deep space.",
         "lots": ["1-A05"]
     },
     {
         "displayName": "Ocel Works",
         "shortName": "OCEL",
+        "tagline": "",
+        "description": "OCEL WORKS is a small company focusing on building unique ships of all kind using in-house know-how. Company is rather small but with long history. it was created in late closed alpha so our designs are build on long time experience. At EosCon we will exhibit our latest ship designs centered around experimental “Core” module as well as our classic designs. ",
         "lots": ["1-A05"]
     },
     {
         "displayName": "Freelancer",
         "shortName": "Freelancer",
+        "tagline": "",
+        "description": "",
         "lots": ["1-A06", "1-B06"]
     },
     {
         "displayName": "Ouroboros",
         "shortName": "OURO",
+        "tagline": "Higher, further, faster !",
+        "description": "We at Ouroboros have one motto : Have fun and push the game to it's limits ! It does not matter if it's exploration, mining, ship designing, station building or fighting as long at everybody is having fun ^^",
         "lots": ["1-A07"]
     },
     {
         "displayName": "Skytanker",
         "shortName": "Skytanker",
+        "tagline": "",
+        "description": "The Skytanker project was born in Colt's mind in August 2021. The need was simple, we need to have a big ship able to travel as fast as possible with as many crates as possible without reducing speed and with reasonable or adaptable range if needed.",
         "lots": ["1-A07"]
     },
     {
         "displayName": "Hepton Shipyard",
         "shortName": "Hepton",
+        "tagline": "",
+        "description": "",
         "lots": ["1-A09"]
     },
     {
         "displayName": "Dirtyhuman",
         "shortName": "Dirtyhuman",
+        "tagline": "",
+        "description": "A human in an Endo world",
         "lots": ["1-A09"]
     },
     {
         "displayName": "Hot Soup",
         "shortName": "H.Soup",
+        "tagline": "",
+        "description": "",
         "lots": ["1-A09"]
     },
     {
         "displayName": "Commando Doggo",
         "shortName": "CD",
+        "tagline": "",
+        "description": "I make experimental ships and modules that may explode at any moment! Designing is my favourate thing to do in Starbase and I like to showcase my inventions on my youtube channel “Commando Doggo” aswell as give away free BPs from time to time so others can try making weird ships themselves.",
         "lots": ["1-A10"]
     },
     {
         "displayName": "Cafe Inc",
         "shortName": "Cafe",
+        "tagline": "",
+        "description": "",
         "lots": ["1-B03", "1-B04"]
     },
     {
         "displayName": "JPTech",
         "shortName": "JPTech",
+        "tagline": "",
+        "description": "",
         "lots": ["1-B05"]
     },
     {
         "displayName": "Kenobi Space Industries",
         "shortName": "KSI",
+        "tagline": "",
+        "description": "",
         "lots": ["1-B09"]
     },
     {
         "displayName": "Stuin",
         "shortName": "Stuin",
+        "tagline": "",
+        "description": "",
         "lots": ["1-B10"]
     },
     {
         "displayName": "Progress Bar",
         "shortName": "PB",
+        "tagline": "",
+        "description": "",
         "lots": ["1-B10"]
     },
     {
         "displayName": "Minerbat's Mazes",
         "shortName": "Minerbat",
+        "tagline": "",
+        "description": "I like mazes :)",
         "lots": ["1-C03"]
     },
     {
         "displayName": "Glorious Space Armada",
         "shortName": "GSA",
+        "tagline": "",
+        "description": "We are a nomad group from a game called Worlds Adrift. We fight, explore, and build whatever we need to test the limits of ourselves and our craft. We do all this in service of the Emperor, and the Armada! Join our discord to learn more about our past, and what we have in store for the future! ",
         "lots": ["1-C03"]
     },
     {
         "displayName": "Vega Industries",
         "shortName": "Vega",
+        "tagline": "",
+        "description": "Vega industries is Part of Icarus Project. We specialize in pushing the boundrys of what’s possible in starbase",
         "lots": ["1-C03"]
     },
     {
         "displayName": "AcETech",
         "shortName": "AcE",
+        "tagline": "",
+        "description": "Ever wondered what you get if you fuse a special-militant faction with a capable transport faction? Welcome to our Advanced Collaboratively Engineered Technology initiative (AcE Tech). Easy to fly yet most advanced and capable ships, enabling you to actually get things done.",
         "lots": ["1-C03"]
     },
     {
         "displayName": "Sigma Industries",
         "shortName": "SIGMA",
+        "tagline": "",
+        "description": "",
         "lots": ["1-C03"]
     },
     {
-        "displayName": "iphex",
-        "shortName": "iphex",
+        "displayName": "Alpha Legion Regime",
+        "shortName": "ALR",
+        "tagline": "",
+        "description": "",
         "lots": ["1-C03"]
     },
     {
         "displayName": "ORION",
         "shortName": "ORION",
+        "tagline": "",
+        "description": "ORION is a UNIVERSAL Corporation, which focuses on Technology (Ship and Station Design, Coding), Combat (PvP) and Industry (Factories, Atmospheric Extraction systems and Cargo). ORION was founded in November 2020 and is primarily a EU/NA Corp. Combining the work synergy of our Tech, Combat and Industry divisions, Orion is working hard towards a goal - Prosperity, Fun and Galactic Influence. Whilst ORION is a Universal Type of Corporation, We also have numerous Options Specific Activities - Raiding, Exploring, Gathering Rare Ores and More! Dedication and Contribution rewards you with you 2 rewards - Assets and Personal Growth in the faction. We care about all members, be it Industry Workers or Combat Soldiers. ORION is active and dedicated. We have numerous in-house Technology, Well-thought out and Effective Rank system as well as Competent and Experienced Leadership. We allow people with the right mindset to progress and get high ranks. Welcome to Orion!",
         "lots": ["1-C05", "1-D05"]
     },
     {
         "displayName": "Icarus Project",
         "shortName": "Icarus",
+        "tagline": "",
+        "description": "We're a group of easy-going and positive-minded endos who are just interested in having a bit of fun. Icarus Project is an umbrella group offering a home to lots of smaller design groups and endos who just want to do their own thing while having a small friendly community that they can ask for help if they need it.",
         "lots": ["1-C06"]
     },
     {
         "displayName": "Angelwing Industries",
         "shortName": "AWI",
+        "tagline": "",
+        "description": "",
         "lots": ["1-C07"]
     },
     {
         "displayName": "Royal Industries",
         "shortName": "Royal",
+        "tagline": "",
+        "description": "",
         "lots": ["1-C08"]
     },
     {
         "displayName": "Seal Club",
         "shortName": "AM-SC",
+        "tagline": "",
+        "description": "",
         "lots": ["1-C09"]
     },
     {
         "displayName": "S&P Industrys",
         "shortName": "S&P",
+        "tagline": "",
+        "description": "We are a small company with 2 Active Members (Peter_Pleite , EnderLordHD). !We are searching for new members! We are looking for new and old players.",
         "lots": ["1-C10"]
     },
     {
         "displayName": "Lucky Industries",
         "shortName": "Lucky",
+        "tagline": "",
+        "description": "Lucky Industries is a manufacturer of quality ships designed to support team-plays and to make your Starbase experience more enjoyable. Expect creative designs, that combine resilience with style, and efficient, spotless bolts-free designs with high degrees of redundancy that won’t let you down!",
         "lots": ["1-C10"]
     },
     {
         "displayName": "Ark's Sparks",
         "shortName": "AS",
+        "tagline": "Form. Function. Ergonomics.",
+        "description": "Ark’s Sparks is the marque for Arkhonus’ solo ship designs, which aim to feature a balanced mixture of form, function and ergonomics. Most AS ships are designed to be flown with lots of automation helping to manage the ship’s systems behind the scenes, minimal training required, and minimal stress on the pilot. ",
         "lots": ["1-D06", "1-D07", "1-D08", "1-D09", "1-D10"]
     }
 ]

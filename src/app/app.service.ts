@@ -12,8 +12,9 @@ export class AppService {
   scene: THREE.Scene = new THREE.Scene
   pickables: THREE.Mesh[] = []
 
-  selectedLot = new BehaviorSubject<Lot | null>(null)
-  jumpToZone = new BehaviorSubject<number>(0)
+  selectedLot = new BehaviorSubject<Lot | null>(null);
+  jumpToZone = new BehaviorSubject<number>(0);
+  raycasting = new BehaviorSubject<boolean>(true);
 
   constructor() { }
 }

@@ -2,51 +2,71 @@
     {
         "displayName": "Sunny Ship Shop",
         "shortName": "SUNNY",
+        "tagline": "",
+        "description": "",
         "lots": ["Shop I01"]
     },
     {
         "displayName": "Okim Industries",
         "shortName": "OKI",
+        "tagline": "",
+        "description": "Now-inactive company led by Nakosy (formerly Okim)",
         "lots": ["Shop I03", "Shop I05", "Shop I07"]
     },
     {
         "displayName": "DURATECH",
         "shortName": "DURATECH",
+        "tagline": "",
+        "description": "German engineering at its finest",
         "lots": ["Shop I09"]
     },
     {
         "displayName": "Rando",
         "shortName": "Rando",
+        "tagline": "",
+        "description": "Collections of ships submitted by random players",
         "lots": ["Shop G01", "Shop G03", "Shop G07", "Shop G09"]
     },
     {
         "displayName": "Vintage",
         "shortName": "Vintage",
+        "tagline": "",
+        "description": "",
         "lots": ["Shop E01"]
     },
     {
         "displayName": "KBot",
         "shortName": "KBot",
+        "tagline": "",
+        "description": "Now-inactive company led by Kenetor",
         "lots": ["Shop E04"]
     },
     {
         "displayName": "Dynastar",
         "shortName": "Dynastar",
+        "tagline": "",
+        "description": "",
         "lots": ["Shop E05"]
     },
     {
         "displayName": "Quasar Systems",
         "shortName": "QUASAR",
+        "tagline": "",
+        "description": "",
         "lots": ["Shop D07"]
     },
     {
         "displayName": "Balestar",
         "shortName": "Balestar",
+        "tagline": "",
+        "description": "",
         "lots": ["Shop E09"]
     },
     {
         "displayName": "Epic Shipyards",
         "shortName": "EPIC",
+        "tagline": "",
+        "description": "",
         "lots": ["Shop C03"]
     }
 ]

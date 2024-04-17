@@ -80,23 +80,24 @@ export class Lot{
         this.updateMaterial()
     }
 
-    initLotLabel(){
+    initLotLabel(hidden: boolean){
+        // If already initialized, return
+        if (this.label2D) return;
+
         // Initialize 2D labels
         const lotLabelDiv = this.renderer2.createElement(
             'div'
         ) as HTMLDivElement
         lotLabelDiv.className = 'lotLabel'
         lotLabelDiv.innerText = this.lotLabel
-        lotLabelDiv.hidden = true
+        lotLabelDiv.hidden = hidden
         this.renderer2.appendChild(this.labelsDiv, lotLabelDiv)
     
         this.label2D = new CSS2DObject(lotLabelDiv)
         let pos: THREE.Vector3 = new THREE.Vector3
         this.lotArea.getWorldPosition(pos)
 
-        //this.label2D.position.copy(pos)
         this.lotArea.add(this.label2D)
-        
     }
 
     updateMaterial(){
