@@ -1,1 +1,7 @@
-<p>exhibitors-list works!</p>
+<div #drawer (mouseenter)="hoveredOverComponent(false)" (mouseleave)="hoveredOverComponent(true)" id="drawer-right-example" class="absolute h-3/4 top-16 inset-x-0 -z-30 p-4 transition-transform bg-white dark:bg-gray-800 text-center overflow-y-auto" tabindex="-1" aria-labelledby="drawer-right-label">
+    <h2 #lotID id="drawer-right-label" class="mb-4 text-xl font-semibold text-gray-500 dark:text-gray-400">Exhibitor List</h2>
+    <div #exhibitorsListDiv class="md:columns-2 lg:columns-3 gap-12 justify-center">
+        <div #exhibitorsList hidden></div>
+    </div>
+
+</div>

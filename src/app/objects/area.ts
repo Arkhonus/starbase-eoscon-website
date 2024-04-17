@@ -205,6 +205,8 @@ export class WarpGate implements Area {
         })
 
         // TODO: Get from database
+        let exhibitorsList: Exhibitor[] = []
+
         let exhibitorsUrl: string = 'assets/json/exhibitors.json';
         this.httpClient.get(exhibitorsUrl).subscribe((response) => {
             let exhibitors = response as ExhibitorJSON[]
@@ -217,7 +219,12 @@ export class WarpGate implements Area {
                     let lot = this.lotsDictionary.get(lotID)
                     lot?.setExhibitor(exhibitor);
                 })
+
+                exhibitorsList.push(exhibitor)
             })
+
+            exhibitorsList.sort((a, b) => (a.displayName > b.displayName) ? 1 : ((b.displayName > a.displayName) ? -1 : 0))
+            this.appService.exhibitors.next(exhibitorsList)
 
 
             this.getFilledLots().forEach((filledLot) => {

@@ -3,11 +3,12 @@ import { Collapse } from 'flowbite';
 import type { CollapseOptions, CollapseInterface } from 'flowbite';
 import type { InstanceOptions } from 'flowbite';
 import { AppService } from '../app.service';
+import { ExhibitorsListComponent } from '../exhibitors-list/exhibitors-list.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [ ExhibitorsListComponent ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
 })
@@ -56,6 +57,10 @@ export class NavbarComponent implements AfterViewInit{
 
   jumpToZone(){
     this.appService.jumpToZone.next(0)
+  }
+
+  exhibitorsListToggleExpand(){
+    this.appService.exhibitorsListExpanded.next(!this.appService.exhibitorsListExpanded.getValue())
   }
   
 }
