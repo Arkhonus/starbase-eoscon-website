@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { Exhibitor } from '../objects/exhibitor';
+import { AppService } from '../app.service';
 
 @Component({
   selector: 'app-exhibitor-card',
@@ -11,23 +12,23 @@ import { Exhibitor } from '../objects/exhibitor';
 export class ExhibitorCardComponent implements AfterViewInit{
   @Input({required: true}) exhibitor!: Exhibitor
 
+  appService: AppService
+
   @ViewChild('exhibitorLogo') exhibitorLogoElement!: ElementRef<HTMLImageElement>
   @ViewChild('exhibitorName') exhibitorNameElement!: ElementRef<HTMLHeadingElement>
   @ViewChild('exhibitorDesc') exhibitorDescElement!: ElementRef<HTMLParagraphElement>
 
-  constructor(){
-
+  constructor(appService: AppService){
+    this.appService = appService;
   }
 
   ngAfterViewInit(): void {
     // Renders a bit differently if the display name is the same as the short name
-    if (this.exhibitor.displayName == this.exhibitor.shortName){
-      this.exhibitorNameElement.nativeElement.innerHTML = `${this.exhibitor.displayName}`;
-    }
-    else {
-      this.exhibitorNameElement.nativeElement.innerHTML = `${this.exhibitor.displayName} (${this.exhibitor.shortName})`;
-    }
-
+    this.exhibitorNameElement.nativeElement.innerHTML = this.exhibitor.detailedName
     this.exhibitorDescElement.nativeElement.innerHTML = `${this.exhibitor.description}`;
+  }
+
+  selectExhibitor(){
+    this.appService.selectedExhibitor.next(this.exhibitor)
   }
 }

@@ -15,6 +15,7 @@ export class AppService {
   exhibitors = new BehaviorSubject<Exhibitor[]>([])
 
   selectedLot = new BehaviorSubject<Lot | null>(null);
+  selectedExhibitor = new BehaviorSubject<Exhibitor | null>(null)
   hoveredLot = new BehaviorSubject<Lot | null>(null);
   currentZone = new BehaviorSubject<number>(0);
   jumpToZone = new BehaviorSubject<number>(0);

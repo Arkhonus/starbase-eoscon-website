@@ -13,11 +13,12 @@ import { HttpClient } from '@angular/common/http';
 import TWEEN from '@tweenjs/tween.js';
 import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
 import { CurrentLotDisplayComponent } from '../current-lot-display/current-lot-display.component';
+import { ExhibitorDetailsComponent } from '../exhibitor-details/exhibitor-details.component';
 
 @Component({
   selector: 'app-area-display',
   standalone: true,
-  imports: [ CurrentLotDisplayComponent ],
+  imports: [ CurrentLotDisplayComponent, ExhibitorDetailsComponent ],
   templateUrl: './area-display.component.html',
   styleUrl: './area-display.component.css'
 })

@@ -2,6 +2,7 @@
     <canvas #areaDisplay id="areaDisplay" class="absolute -z-50"></canvas>
     <div #labelsDisplay id="labels" class="absolute bottom-0 -z-40"></div>
     <app-current-lot-display></app-current-lot-display>
+    <app-exhibitor-details></app-exhibitor-details>
 </div>
 <div class="absolute w-12 inset-y-0 right-2 items-center justify-center flex -z-40">
     <button (mouseenter)="hoveredOverButton(false)" (mouseleave)="hoveredOverButton(true)" (click)="cameraJump(goToPrevZone)" #buttonNextSegment class="fixed hover:animate-ping">
