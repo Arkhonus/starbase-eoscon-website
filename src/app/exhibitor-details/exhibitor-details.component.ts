@@ -15,6 +15,7 @@ import { Exhibitor } from '../objects/exhibitor';
 })
 export class ExhibitorDetailsComponent implements AfterViewInit{
   @ViewChild('modal') modalElement!: ElementRef<HTMLDivElement>
+  @ViewChild('exhibitorLogo') exhibitorLogoElement!: ElementRef<HTMLImageElement>
   @ViewChild('exhibitorName') exhibitorNameElement!: ElementRef<HTMLElement>
   @ViewChild('exhibitorDesc') exhibitorDescElement!: ElementRef<HTMLElement>
   @ViewChild('taglineDiv') exhibitorTaglineDivElement!: ElementRef<HTMLDivElement>
@@ -51,8 +52,20 @@ export class ExhibitorDetailsComponent implements AfterViewInit{
 
     this.appService.selectedExhibitor.subscribe((exhibitor) => {
       if (exhibitor != null){
+        // Set exhibitor logo
+        if (exhibitor.logo != ""){
+          this.exhibitorLogoElement.nativeElement.classList.remove("hidden");
+          this.exhibitorLogoElement.nativeElement.src = exhibitor.logo
+        }
+        else {
+          this.exhibitorLogoElement.nativeElement.classList.add("hidden");
+          this.exhibitorLogoElement.nativeElement.src = ""
+        }
+
+        // Set exhibitor name
         this.exhibitorNameElement.nativeElement.innerHTML = exhibitor.detailedName
 
+        // Set exhibitor description
         if (exhibitor.description == ""){
           this.exhibitorDescElement.nativeElement.innerHTML = "This exhibitor has not provided a description."
         }
@@ -60,17 +73,13 @@ export class ExhibitorDetailsComponent implements AfterViewInit{
           this.exhibitorDescElement.nativeElement.innerHTML = exhibitor.description
         }
 
-
+        // Sets exhibitor tagline
         if (exhibitor.tagline == ""){
           this.exhibitorTaglineDivElement.nativeElement.classList.add("hidden")
-          // this.exhibitorTaglineDivElement.nativeElement.classList.remove("inline-block")
-
           this.exhibitorTaglineElement.nativeElement.innerHTML = ""
         }
         else {
           this.exhibitorTaglineDivElement.nativeElement.classList.remove("hidden")
-          // this.exhibitorTaglineDivElement.nativeElement.classList.add("inline-block")
-
           this.exhibitorTaglineElement.nativeElement.innerHTML = exhibitor.tagline
         }
 

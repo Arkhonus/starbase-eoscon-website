@@ -1,6 +1,7 @@
 export class Exhibitor {
     displayName: string;
     shortName: string;
+    logo: string;
     company: string;
     tagline: string;
     description: string;
@@ -10,6 +11,7 @@ export class Exhibitor {
     constructor (exhibitorJSON: ExhibitorJSON){
         this.displayName = exhibitorJSON.displayName
         this.shortName = exhibitorJSON.shortName;
+        this.logo = exhibitorJSON.logo;
         this.tagline = exhibitorJSON.tagline;
         this.description = exhibitorJSON.description
         this.company = exhibitorJSON.company;
@@ -25,6 +27,7 @@ export class Exhibitor {
 export interface ExhibitorJSON{
     displayName: string;
     shortName: string;
+    logo: string;
     tagline: string;
     description: string;
     company: string;

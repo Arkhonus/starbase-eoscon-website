@@ -26,6 +26,15 @@ export class ExhibitorCardComponent implements AfterViewInit{
     // Renders a bit differently if the display name is the same as the short name
     this.exhibitorNameElement.nativeElement.innerHTML = this.exhibitor.detailedName
     this.exhibitorDescElement.nativeElement.innerHTML = `${this.exhibitor.description}`;
+
+    if (this.exhibitor.logo != ""){
+      //this.exhibitorLogoElement.nativeElement.classList.remove("hidden");
+      this.exhibitorLogoElement.nativeElement.src = this.exhibitor.logo
+    }
+    else {
+      //this.exhibitorLogoElement.nativeElement.classList.add("hidden");
+      //this.exhibitorLogoElement.nativeElement.src = ""
+    }
   }
 
   selectExhibitor(){
