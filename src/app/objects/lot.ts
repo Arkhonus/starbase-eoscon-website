@@ -3,6 +3,7 @@ import { Exhibitor } from "./exhibitor"
 import { Ship } from "./ship"
 import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer'
 import { Renderer2 } from '@angular/core'
+import { AppService } from '../app.service'
 
 export class Lot{
     lotID: string;
@@ -17,6 +18,7 @@ export class Lot{
     label2D?: CSS2DObject;
     labelsDiv: HTMLDivElement;
     originalShop: boolean;
+    appService: AppService
     
     lotMaterial = new THREE.MeshPhysicalMaterial({
         reflectivity: 0,
@@ -35,40 +37,30 @@ export class Lot{
       color: 0x00ff00,
     })
 
-    constructor(lotID: string, zone: number, lotArea:THREE.Mesh, labelsDiv: HTMLDivElement, private renderer2: Renderer2, originalShop: boolean = false) {
-        this.lotID = lotID
-        this.lotArea = lotArea
-        this.zone = zone
-        this.labelsDiv = labelsDiv
-        this.originalShop = originalShop
+    constructor(appService: AppService, lotID: string, zone: number, lotArea:THREE.Mesh, labelsDiv: HTMLDivElement, private renderer2: Renderer2, originalShop: boolean = false) {
+        this.appService = appService;
+        this.lotID = lotID;
+        this.lotArea = lotArea;
+        this.zone = zone;
+        this.labelsDiv = labelsDiv;
+        this.originalShop = originalShop;
 
-        this.updateMaterial()
+        this.updateMaterial();
 
-        lotArea.material = this.lotMaterial
+        lotArea.material = this.lotMaterial;
+
+        this.appService.hoveredLot.subscribe((lot) => {
+            this.hovered = (lot == this);
+            this.updateMaterial();
+        })
     }
 
     getShipsCount(): number {
         return this.ships.length
     }
 
-    get lotRow(): string{
-        if (this.conLotID){
-            return this.conLotID.substring(this.conLotID.length - 2, this.conLotID.length)
-        }
-        else {
-            return ""
-        }
-    }
-
-    get lotColumn(): string{
-        if (this.conLotID){
-            return this.conLotID.substring(this.conLotID.length - 3, this.conLotID.length - 2)
-        }
-        else {
-            return ""
-        }
-    }
-
+    get lotRow(): string{ return this.conLotID ? this.conLotID.substring(this.conLotID.length - 2, this.conLotID.length) : ""}
+    get lotColumn(): string{ return this.conLotID ? this.conLotID.substring(this.conLotID.length - 3, this.conLotID.length - 2) : ""}
 
     get lotLabel(): string{
         let exhibitorNames: string = ""
@@ -93,11 +85,6 @@ export class Lot{
 
     setExhibitor(exhibitor: Exhibitor){
         this.exhibitor?.push(exhibitor)
-        this.updateMaterial()
-    }
-
-    setHovered(hovered: boolean){
-        this.hovered = hovered
         this.updateMaterial()
     }
 

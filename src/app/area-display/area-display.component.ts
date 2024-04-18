@@ -266,9 +266,7 @@ export class AreaDisplayComponent implements AfterViewInit{
                 if (lot.lotArea == this.intersectedObject as THREE.Mesh){
                   this.currentLot = lot
                   if (this.prevHoveredLot != this.currentLot){
-                    lot.setHovered(true)
                     this.appService.hoveredLot.next(lot)
-                    this.prevHoveredLot?.setHovered(false)
                   }
   
                   this.prevHoveredLot = lot;
@@ -278,7 +276,6 @@ export class AreaDisplayComponent implements AfterViewInit{
           })
   
         }else {
-          this.prevHoveredLot?.setHovered(false)
           this.prevHoveredLot = undefined
           this.appService.hoveredLot.next(null)
         }
@@ -287,7 +284,6 @@ export class AreaDisplayComponent implements AfterViewInit{
       else{
         this.intersectedObject = null
 
-        this.prevHoveredLot?.setHovered(false)
         this.prevHoveredLot = undefined
         this.appService.hoveredLot.next(null)
       }

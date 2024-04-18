@@ -78,7 +78,7 @@ export class WarpGate implements Area {
                 let lotID = "Shop " + obj.name.substring(obj.name.length-3 , obj.name.length)
 
                 // Creates lot object and pushes to array
-                let lot = new Lot(lotID, 0, m, _this.labelsDiv, _this.renderer2)
+                let lot = new Lot(_this.appService, lotID, 0, m, _this.labelsDiv, _this.renderer2)
                 _this.appService.pickables.push(m)
                 _this.lots.push(lot)
                 lot.setEnabled(false)
@@ -120,7 +120,7 @@ export class WarpGate implements Area {
                     let lotRow = lotID.substring(obj.name.length-5 , obj.name.length-4)
 
                     // Creates lot object and pushes to array
-                    let lot = new Lot(lotID, i+1, m, _this.labelsDiv, _this.renderer2)
+                    let lot = new Lot(_this.appService, lotID, i+1, m, _this.labelsDiv, _this.renderer2)
                     _this.appService.pickables.push(m)
                     _this.lots.push(lot)
 

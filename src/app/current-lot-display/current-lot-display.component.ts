@@ -14,7 +14,7 @@ export class CurrentLotDisplayComponent {
   @ViewChild('currentSegment') segmentElement!: ElementRef<HTMLHeadingElement>
   @ViewChild('currentLot') lotElement!: ElementRef<HTMLHeadingElement>
 
-  appService: AppService
+  appService: AppService;
   currentHoveredLot: Lot | null = null;
 
   constructor(appService: AppService){
@@ -33,6 +33,7 @@ export class CurrentLotDisplayComponent {
     this.currentHoveredLot = hoveredLot
     if (hoveredLot == null){
       this.lotElement.nativeElement.classList.add("hidden")
+      this.onZoneChange(this.appService.currentZone.getValue())
     }
     else{
       this.lotElement.nativeElement.classList.remove("hidden")
