@@ -5,17 +5,18 @@ import { CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer'
 import { Renderer2 } from '@angular/core'
 
 export class Lot{
-    lotID: string
-    zone: number
-    conLotID?: string
-    exhibitor: Exhibitor[] = []
-    ships: Ship[] = []
-    lotArea: THREE.Mesh
-    enabled: boolean = true
-    hovered: boolean = false
-    lotColor: number = 0x555555
-    label2D?: CSS2DObject
-    labelsDiv: HTMLDivElement
+    lotID: string;
+    zone: number;
+    conLotID?: string;
+    exhibitor: Exhibitor[] = [];
+    ships: Ship[] = [];
+    lotArea: THREE.Mesh;
+    enabled: boolean = true;
+    hovered: boolean = false;
+    lotColor: number = 0x555555;
+    label2D?: CSS2DObject;
+    labelsDiv: HTMLDivElement;
+    originalShop: boolean;
     
     lotMaterial = new THREE.MeshPhysicalMaterial({
         reflectivity: 0,
@@ -34,11 +35,12 @@ export class Lot{
       color: 0x00ff00,
     })
 
-    constructor(lotID: string, zone: number, lotArea:THREE.Mesh, labelsDiv: HTMLDivElement, private renderer2: Renderer2) {
+    constructor(lotID: string, zone: number, lotArea:THREE.Mesh, labelsDiv: HTMLDivElement, private renderer2: Renderer2, originalShop: boolean = false) {
         this.lotID = lotID
         this.lotArea = lotArea
         this.zone = zone
         this.labelsDiv = labelsDiv
+        this.originalShop = originalShop
 
         this.updateMaterial()
 
@@ -48,6 +50,25 @@ export class Lot{
     getShipsCount(): number {
         return this.ships.length
     }
+
+    get lotRow(): string{
+        if (this.conLotID){
+            return this.conLotID.substring(this.conLotID.length - 2, this.conLotID.length)
+        }
+        else {
+            return ""
+        }
+    }
+
+    get lotColumn(): string{
+        if (this.conLotID){
+            return this.conLotID.substring(this.conLotID.length - 3, this.conLotID.length - 2)
+        }
+        else {
+            return ""
+        }
+    }
+
 
     get lotLabel(): string{
         let exhibitorNames: string = ""

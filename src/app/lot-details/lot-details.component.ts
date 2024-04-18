@@ -79,7 +79,12 @@ export class LotDetailsComponent implements AfterViewInit {
     else {
       this.drawer?.show()
 
-      this.lotIdElement.nativeElement.innerHTML = "Lot " + lot.lotID
+      if (lot.enabled || lot.originalShop){
+        this.lotIdElement.nativeElement.innerHTML = "Lot " + lot.conLotID
+      }
+      else{
+        this.lotIdElement.nativeElement.innerHTML = "Unused Lot"
+      }
 
       if (lot.exhibitor.length == 0){
         this.exhibitorNumberElement.nativeElement.removeAttribute("hidden")

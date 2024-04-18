@@ -11,11 +11,13 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 import { AppService } from '../app.service';
 import { HttpClient } from '@angular/common/http';
 import TWEEN from '@tweenjs/tween.js';
+import { CSS3DRenderer } from 'three/examples/jsm/renderers/CSS3DRenderer';
+import { CurrentLotDisplayComponent } from '../current-lot-display/current-lot-display.component';
 
 @Component({
   selector: 'app-area-display',
   standalone: true,
-  imports: [  ],
+  imports: [ CurrentLotDisplayComponent ],
   templateUrl: './area-display.component.html',
   styleUrl: './area-display.component.css'
 })
@@ -32,6 +34,7 @@ export class AreaDisplayComponent implements AfterViewInit{
   controls?: OrbitControls
   controlsSphericalCoords: THREE.Spherical = new THREE.Spherical()
   labelRenderer?: CSS2DRenderer
+  gridRenderer: CSS3DRenderer = new CSS3DRenderer();
   stats?: Stats
   directionalLight?: THREE.DirectionalLight
   renderer2: Renderer2
@@ -57,7 +60,6 @@ export class AreaDisplayComponent implements AfterViewInit{
   appService: AppService
   httpClient: HttpClient
 
-  currentZone: number = 0
   prevZone: number = -1
   goToNextZone: number = 1
   goToPrevZone: number = -1
@@ -80,6 +82,7 @@ export class AreaDisplayComponent implements AfterViewInit{
     this.appService.jumpToZone.subscribe((zone) => {
       this.cameraJump(zone)
     })
+
   }
   
   ngAfterViewInit(): void {
@@ -92,6 +95,12 @@ export class AreaDisplayComponent implements AfterViewInit{
     // Renderer config
     this.renderer = new THREE.WebGLRenderer({canvas: this.areaDisplay.nativeElement})
     this.renderer.setSize(window.innerWidth, window.innerHeight - this.appService.navbarComponent?.navbarElement.nativeElement.offsetHeight!)
+
+    // CSS3DRenderer
+    this.gridRenderer.setSize(window.innerWidth, window.innerHeight - this.appService.navbarComponent?.navbarElement.nativeElement.offsetHeight!);
+    this.renderer2.appendChild(this.containerDiv.nativeElement, this.gridRenderer.domElement);
+    this.gridRenderer.domElement.classList.add("absolute", "-z-40")
+    this.gridRenderer.domElement.style.pointerEvents = "none"
     
     // Controls config
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -117,7 +126,7 @@ export class AreaDisplayComponent implements AfterViewInit{
       this.controls.addEventListener('change', function(){
         _this.directionalLight!.position.set(_this.camera!.position.x, 0.5, _this.camera!.position.z)
         
-        _this.zoneChange()
+        // _this.zoneChange()
       })
     }
     
@@ -133,22 +142,24 @@ export class AreaDisplayComponent implements AfterViewInit{
     }
     
     this.renderer.setAnimationLoop(this.animate.bind(this))
+    this.appService.currentZone.subscribe((currentZone) => {this.zoneChange(currentZone)})
+
+    // this.appService.currentZone.next(0)
   }
 
-  zoneChange(){
-    this.currentZone = this.getUserCurrentZone()
+  zoneChange(currentZone: number){
 
-    if (this.currentZone != this.prevZone){
-      this.goToNextZone = (this.currentZone + 1) > 7 ? 0 : (this.currentZone + 1)
-      this.goToPrevZone = (this.currentZone - 1) < 0 ? 7 : (this.currentZone - 1)
+    if (currentZone != this.prevZone){
+      this.goToNextZone = (currentZone + 1) > 7 ? 0 : (currentZone + 1)
+      this.goToPrevZone = (currentZone - 1) < 0 ? 7 : (currentZone - 1)
       
       // Updates lot labels
-      this.updateLotLabelVisibility(this.currentZone)
+      this.updateLotLabelVisibility(currentZone)
       
-      console.log("Now looking at zone " + this.currentZone)
+      console.log("Now looking at zone " + currentZone)
     }
     
-    this.prevZone = this.currentZone
+    this.prevZone = currentZone
   }
 
   updateLotLabelVisibility(currentZone: number): void{
@@ -175,6 +186,34 @@ export class AreaDisplayComponent implements AfterViewInit{
     else if (angle > 22.5 && angle < 67.5) return 7 
 
     return 0
+  }
+
+  userPrevZone: number = 0
+  updateUserCurrentZone() {
+    const forward = new THREE.Vector3(0, 0, 1)
+
+    // Gets signed angle of camera to determine the zone currently being looked at
+    const cameraFlatPos = new THREE.Vector3(this.camera!.position.x, 0, this.camera!.position.z)
+    
+    const angle = this.signedAngleTo(forward, cameraFlatPos) * 180/Math.PI
+    
+    let userCurrentZone: number;
+
+    // if (angle > -22.5 && angle < 22.5) userCurrentZone = 0
+    if (angle < -22.5 && angle > -67.5) userCurrentZone =  1
+    else if (angle < -67.5 && angle > -112.5) userCurrentZone =  2
+    else if (angle < -112.5 && angle > -157.5) userCurrentZone =  3
+    else if (angle < -157.5 || angle > 157.5) userCurrentZone =  4
+    else if (angle > 112.5 && angle < 157.5) userCurrentZone =  5
+    else if (angle > 67.5 && angle < 112.5) userCurrentZone =  6 
+    else if (angle > 22.5 && angle < 67.5) userCurrentZone =  7
+    else userCurrentZone = 0
+
+    if (userCurrentZone != this.userPrevZone){
+      this.appService.currentZone.next(userCurrentZone)
+    }
+
+    this.userPrevZone = userCurrentZone;
   }
   
   setupControls(areaName: string) {
@@ -217,6 +256,7 @@ export class AreaDisplayComponent implements AfterViewInit{
           this.intersectedObject = this.intersects[0].object
         } else {
           this.intersectedObject = null
+          this.appService.hoveredLot.next(null)
         }
   
         if (this.intersectedObject){
@@ -227,6 +267,7 @@ export class AreaDisplayComponent implements AfterViewInit{
                   this.currentLot = lot
                   if (this.prevHoveredLot != this.currentLot){
                     lot.setHovered(true)
+                    this.appService.hoveredLot.next(lot)
                     this.prevHoveredLot?.setHovered(false)
                   }
   
@@ -239,6 +280,7 @@ export class AreaDisplayComponent implements AfterViewInit{
         }else {
           this.prevHoveredLot?.setHovered(false)
           this.prevHoveredLot = undefined
+          this.appService.hoveredLot.next(null)
         }
 
       }
@@ -247,6 +289,7 @@ export class AreaDisplayComponent implements AfterViewInit{
 
         this.prevHoveredLot?.setHovered(false)
         this.prevHoveredLot = undefined
+        this.appService.hoveredLot.next(null)
       }
     }
   }
@@ -295,7 +338,7 @@ export class AreaDisplayComponent implements AfterViewInit{
 
   selectLot(lot: Lot){
     this.appService.selectedLot.next(lot)
-    console.log("Selected lot " + lot.conLotID)
+    console.log(`Selected lot ${lot.conLotID}, row ${lot.lotRow}, column ${lot.lotColumn}`)
   }
 
   deselectLot(){
@@ -343,7 +386,7 @@ export class AreaDisplayComponent implements AfterViewInit{
       let targetRotation: number
 
       // Hack job, to refine later
-      if (zone > this.currentZone){
+      if (zone > this.appService.currentZone.getValue()){
         if (zone < 6){
           targetRotation = Math.PI/4 * (-zone)
         }
@@ -396,12 +439,14 @@ export class AreaDisplayComponent implements AfterViewInit{
     this.camera!.aspect = window.innerWidth / (window.innerHeight - this.appService.navbarComponent?.navbarElement.nativeElement.offsetHeight!)
     this.camera!.updateProjectionMatrix()
     this.renderer!.setSize(window.innerWidth, window.innerHeight - this.appService.navbarComponent?.navbarElement.nativeElement.offsetHeight!)
+    this.gridRenderer!.setSize(window.innerWidth, window.innerHeight - this.appService.navbarComponent?.navbarElement.nativeElement.offsetHeight!)
     this.labelRenderer!.setSize(window.innerWidth, window.innerHeight - this.appService.navbarComponent?.navbarElement.nativeElement.offsetHeight!)
     this.render()
   }
   
   render() {
     this.labelRenderer!.render(this.appService.scene, this.camera!)
+    this.gridRenderer.render(this.appService.scene, this.camera!)
     this.renderer!.render(this.appService.scene, this.camera!)
   }
   
@@ -414,5 +459,10 @@ export class AreaDisplayComponent implements AfterViewInit{
     }
     
     this.render()
+    this.updateEvents()
+  }
+
+  updateEvents(){
+    this.updateUserCurrentZone()
   }
 }

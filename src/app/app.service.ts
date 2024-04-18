@@ -15,9 +15,13 @@ export class AppService {
   exhibitors = new BehaviorSubject<Exhibitor[]>([])
 
   selectedLot = new BehaviorSubject<Lot | null>(null);
+  hoveredLot = new BehaviorSubject<Lot | null>(null);
+  currentZone = new BehaviorSubject<number>(0);
   jumpToZone = new BehaviorSubject<number>(0);
   raycasting = new BehaviorSubject<boolean>(true);
-  exhibitorsListExpanded = new BehaviorSubject<boolean>(false); 
+  exhibitorsListExpanded = new BehaviorSubject<boolean>(false);
+  
+  gridsVisible = new BehaviorSubject<boolean>(true);
 
   constructor() { }
 }
